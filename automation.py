@@ -1,7 +1,9 @@
 import selenium
 import time
 from selenium import webdriver
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
 #C:\Program Files (x86)\Google\Chrome\Application
 # (Path di chrome)
@@ -16,36 +18,20 @@ driver = webdriver.Chrome(executable_path=chromeDriverPath, chrome_options=chrom
 
 while True:
     try: 
-        adDetector = driver.find_elements_by_xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div/div[17]/div/div[2]/span[3]/button")[0]
+        skipButton = driver.find_elements_by_class_name("ytp-ad-skip-button-container")[0]
         ad = True
-        print("Ad detected!")
-        muteButton = driver.find_elements_by_xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div/div[27]/div[2]/div[1]/span/button")[0]
-        muteButton.click()
+        # muteButton = driver.find_elements_by_class_name("ytp-volume-area")[0]
+        # muteButton.click()
+        WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CLASS_NAME, "ytp-volume-area"))).click()
+
         while ad:
             try:
-                skipButton = driver.find_elements_by_xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div/div[17]/div[2]/div/div/div[2]/span/button")[0]
                 skipButton.click()
-                muteButton = driver.find_elements_by_xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div/div[31]/div[2]/div[1]/span/button")[0]
-                muteButton.click()
-                ad = False
-            except IndexError:
-                try:
-                    skipButton = driver.find_elements_by_xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div/div[17]/div/div[3]/div/div[2]/span/button/div")[0]
-                    skipButton.click()
-                    muteButton = driver.find_elements_by_xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div/div[31]/div[2]/div[1]/span/button")[0]
-                    muteButton.click()
-                    ad = False
-                except IndexError:
-                    pass
+                ad = False 
+            except selenium.common.exceptions.ElementNotInteractableException:
+                ad = True
+        muteButton = driver.find_elements_by_class_name("ytp-volume-area")[0]
+        muteButton.click()
     except IndexError:
         pass
     
-
-
-# muteButton = driver.find_elements_by_xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div/div[27]/div[2]/div[1]/span/button")[0]
-# muteButton.click()
-# skipButton = driver.find_elements_by_xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div/div[17]/div[2]/div/div/div[2]/span/button")[0]
-# skipButton.click()
-# skipButton = driver.find_elements_by_xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div/div[17]/div/div[3]/div/div[2]/span/button")[0]
-# muteButton = driver.find_elements_by_xpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[1]/div/div/div/ytd-player/div/div/div[31]/div[2]/div[1]/span/button")[0]
-# muteButton.click()
